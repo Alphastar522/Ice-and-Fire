@@ -115,13 +115,17 @@ STARTERS = {
         {"name": "Drizzile", "base_stats": {"HP": 65, "Attack": 60, "Defense": 55, "Sp. Atk": 95, "Sp. Def": 55, "Speed": 90}, "evo_level": 35},
         {"name": "Inteleon", "base_stats": {"HP": 70, "Attack": 85, "Defense": 65, "Sp. Atk": 125, "Sp. Def": 65, "Speed": 120}, "evo_level": None},
     ],
-    # Added Pokémon
+    # All Eevee and its evolutions.
     "Eevee": [
         {"name": "Eevee", "base_stats": {"HP": 55, "Attack": 55, "Defense": 50, "Sp. Atk": 45, "Sp. Def": 65, "Speed": 55}, "evo_level": None},
-        # These evolutions require a stone and are included here for stats, but the program can't check for stones.
         {"name": "Vaporeon", "base_stats": {"HP": 130, "Attack": 65, "Defense": 60, "Sp. Atk": 110, "Sp. Def": 95, "Speed": 65}, "evo_level": 1},
         {"name": "Jolteon", "base_stats": {"HP": 65, "Attack": 65, "Defense": 60, "Sp. Atk": 110, "Sp. Def": 95, "Speed": 130}, "evo_level": 1},
         {"name": "Flareon", "base_stats": {"HP": 65, "Attack": 130, "Defense": 60, "Sp. Atk": 95, "Sp. Def": 110, "Speed": 65}, "evo_level": 1},
+        {"name": "Espeon", "base_stats": {"HP": 65, "Attack": 65, "Defense": 60, "Sp. Atk": 130, "Sp. Def": 95, "Speed": 110}, "evo_level": 1},
+        {"name": "Umbreon", "base_stats": {"HP": 95, "Attack": 65, "Defense": 110, "Sp. Atk": 60, "Sp. Def": 130, "Speed": 65}, "evo_level": 1},
+        {"name": "Leafeon", "base_stats": {"HP": 65, "Attack": 110, "Defense": 130, "Sp. Atk": 60, "Sp. Def": 65, "Speed": 95}, "evo_level": 1},
+        {"name": "Glaceon", "base_stats": {"HP": 65, "Attack": 60, "Defense": 110, "Sp. Atk": 130, "Sp. Def": 95, "Speed": 65}, "evo_level": 1},
+        {"name": "Sylveon", "base_stats": {"HP": 95, "Attack": 65, "Defense": 65, "Sp. Atk": 110, "Sp. Def": 130, "Speed": 60}, "evo_level": 1},
     ],
 }
 
@@ -337,31 +341,60 @@ def main():
         else:
             print("Invalid Pokémon name. Please try again.")
 
-    # Determine the current evolutionary stage based on level
-    stages = STARTERS[starter]
-    current_stage = stages[0]
-    for stage in stages:
-        if stage["evo_level"] is not None and level >= stage["evo_level"]:
-            current_stage = stage
+    # Eevee evolution logic
+    if starter == "Eevee":
+        while True:
+            evo_choice = input(f"\nYour Eevee is at level {level}. Has it evolved? (yes/no): ").lower().strip()
+            if evo_choice == 'no':
+                current_stage = STARTERS["Eevee"][0]
+                break
+            elif evo_choice == 'yes':
+                print("Which Eeveelution did you choose?")
+                print("1. Vaporeon")
+                print("2. Jolteon")
+                print("3. Flareon")
+                print("4. Espeon")
+                print("5. Umbreon")
+                print("6. Leafeon")
+                print("7. Glaceon")
+                print("8. Sylveon")
+                
+                evo_map = {
+                    "1": "Vaporeon", "2": "Jolteon", "3": "Flareon", "4": "Espeon", 
+                    "5": "Umbreon", "6": "Leafeon", "7": "Glaceon", "8": "Sylveon"
+                }
+
+                while True:
+                    evo_number = input("Enter the number of the evolution: ")
+                    chosen_evo_name = evo_map.get(evo_number)
+                    if chosen_evo_name:
+                        for evo_data in STARTERS["Eevee"]:
+                            if evo_data["name"] == chosen_evo_name:
+                                current_stage = evo_data
+                                break
+                        break
+                    else:
+                        print("Invalid number. Please enter a number from 1 to 8.")
+                break
+            else:
+                print("Invalid response. Please enter 'yes' or 'no'.")
+    else:
+        # Determine the current evolutionary stage based on level for non-Eevee Pokémon
+        stages = STARTERS[starter]
+        current_stage = stages[0]
+        for stage in stages:
+            if stage["evo_level"] is not None and level >= stage["evo_level"]:
+                current_stage = stage
+
 
     print(f"\nAt level {level}, your {starter} is a {current_stage['name']}!")
     
-    # Display the generated and input stats
-    print("\n--- Hidden Stats ---")
-    print(f"Nature: {nature}")
-    print("Individual Values (IVs) [randomly generated]:")
-    for stat, value in ivs.items():
-        print(f"  {stat}: {value}")
-    print("Effort Values (EVs) [from battle record]:")
-    for stat, value in evs.items():
-        print(f"  {stat}: {value}")
-    print(f"Total EVs: {sum(evs.values())}")
-
     # Calculate and display final stats
     stats = get_stats(current_stage, level, ivs, evs, nature)
     print("\n--- Calculated Final Stats ---")
+    print(f"Nature: {nature}")
     for stat, value in stats.items():
-        print(f"  {stat}: {value}")
+        print(f"  {stat}: {value}")
 
 if __name__ == "__main__":
     main()
