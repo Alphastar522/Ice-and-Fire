@@ -1,7 +1,8 @@
-#**Pokéstat Calculator**#
+#**Pokéstat Calculator**
+
 This is a Python console application designed to calculate the final stats of a Pokémon based on its base stats, level, randomly generated hidden stats, and a user-provided battle record.
 
-About
+**About**
 Have you ever wondered what your Pokémon's final stats would be without having to use an online calculator? This program simulates the process of training a Pokémon by allowing you to input the Pokémon you have defeated. It then calculates the final stats using the in-game formula, taking into account crucial factors like IVs, EVs, and nature.
 
 Features
