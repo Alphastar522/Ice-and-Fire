@@ -115,6 +115,14 @@ STARTERS = {
         {"name": "Drizzile", "base_stats": {"HP": 65, "Attack": 60, "Defense": 55, "Sp. Atk": 95, "Sp. Def": 55, "Speed": 90}, "evo_level": 35},
         {"name": "Inteleon", "base_stats": {"HP": 70, "Attack": 85, "Defense": 65, "Sp. Atk": 125, "Sp. Def": 65, "Speed": 120}, "evo_level": None},
     ],
+    # Added Pokémon
+    "Eevee": [
+        {"name": "Eevee", "base_stats": {"HP": 55, "Attack": 55, "Defense": 50, "Sp. Atk": 45, "Sp. Def": 65, "Speed": 55}, "evo_level": None},
+        # These evolutions require a stone and are included here for stats, but the program can't check for stones.
+        {"name": "Vaporeon", "base_stats": {"HP": 130, "Attack": 65, "Defense": 60, "Sp. Atk": 110, "Sp. Def": 95, "Speed": 65}, "evo_level": 1},
+        {"name": "Jolteon", "base_stats": {"HP": 65, "Attack": 65, "Defense": 60, "Sp. Atk": 110, "Sp. Def": 95, "Speed": 130}, "evo_level": 1},
+        {"name": "Flareon", "base_stats": {"HP": 65, "Attack": 130, "Defense": 60, "Sp. Atk": 95, "Sp. Def": 110, "Speed": 65}, "evo_level": 1},
+    ],
 }
 
 # EV yield data for a selection of common Kanto Pokémon
@@ -258,12 +266,12 @@ def main():
     """
     Main function to run the Pokéstat program with battle record EV input.
     """
-    print("Welcome to the Pokéstat program! Please select a starter.")
-    print("Available Starters:")
+    print("Welcome to the Pokéstat program! Please select a Pokémon.")
+    print("Available Pokémon:")
     for name in STARTERS:
         print(f"- {name}")
 
-    starter_input = input("Enter starter Pokémon name: ")
+    starter_input = input("Enter Pokémon name: ")
     starter_input_clean = starter_input.strip().lower().replace(' ', '')
     starter = None
     for key in STARTERS:
@@ -273,7 +281,7 @@ def main():
             break
 
     if not starter:
-        print("Invalid starter Pokémon. Please try again.")
+        print("Invalid Pokémon name. Please try again.")
         return
 
     # Get level with validation
@@ -298,9 +306,7 @@ def main():
     evs = {stat: 0 for stat in ["HP", "Attack", "Defense", "Sp. Atk", "Sp. Def", "Speed"]}
     total_evs = 0
     print("\nNow, enter the Pokémon you have defeated. Type 'done' to finish.")
-    print("Example: 'Pidgey' will give you +1 Speed EV.")
-    print("Available Pokémon for EV tracking:", ", ".join(EV_YIELDS.keys()))
-
+    
     while True:
         if total_evs >= 510:
             print("You have reached the maximum of 510 EVs!")
@@ -318,7 +324,6 @@ def main():
                 if evs[stat] < 252:
                     evs[stat] += ev_gain
                     total_evs += ev_gain
-                    print(f"Added {ev_gain} {stat} EV from {battle_input}.")
                     if evs[stat] > 252:
                         overage = evs[stat] - 252
                         evs[stat] = 252
